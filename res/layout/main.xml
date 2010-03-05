@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:id="@+id/RelativeLayout01"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<ToggleButton android:id="@+id/ToggleButton01"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:textOn="@string/light_on" android:textOff="@string/light_off"
+		android:layout_centerHorizontal="true" android:layout_below="@+id/TextView01"
+		android:layout_marginTop="30px" android:paddingBottom="50px"
+		android:paddingTop="30px" android:paddingRight="30px"
+		android:paddingLeft="30px" android:layout_marginBottom="10px"></ToggleButton>
+	<CheckBox android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/CheckBox01"
+		android:layout_centerHorizontal="true" android:layout_below="@+id/ToggleButton01"
+		android:text="@string/light_mode"></CheckBox>
+
+
+</RelativeLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="light_on">Light</string>
+	<string name="light_off">Light</string>	
+    <string name="app_name">Lamppu</string>
+	<string name="menu_fix_perm">Fix permissions</string>
+	<string name="menu_quit">Quit</string>
+<string name="light_mode">Super light</string>
+<string name="INTENT_LIGHT_OFF">com.vmt.lamppu.ILamppuService.ACTION_LIGHT_OFF</string>
+<string name="INTENT_LIGHT_ON">com.vmt.lamppu.ILamppuService.ACTION_LIGHT_ON</string>
+</resources>
