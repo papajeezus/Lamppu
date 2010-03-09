@@ -29,122 +29,87 @@ import android.widget.ToggleButton;
 
 public class LamppuActivity extends Activity {
 
-	private static final String PREFS_NAME = "LamppuPreferences";
-	private static final int PROGRESS_DIALOG = 0;
-	private BroadcastReceiver mReceiver;
+    private static final String PREFS_NAME = "LamppuPreferences";
+    private static final int PROGRESS_DIALOG = 0;
+    private BroadcastReceiver mReceiver;
 
-	private boolean mHighMode;
-	private boolean mLightOn;
+    private boolean mHighMode;
+    private boolean mLightOn;
 
-	private static final int MENU_ABOUT = Menu.FIRST;
+    private static final int MENU_ABOUT = Menu.FIRST;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-		// Log.d("Lamppu", "Activity onCreate");
-		final SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		mHighMode = settings.getBoolean("highMode", false);
-		final SharedPreferences.Editor editor = settings.edit();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        // Log.d("Lamppu", "Activity onCreate");
+        final SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        mHighMode = settings.getBoolean("highMode", false);
+        final SharedPreferences.Editor editor = settings.edit();
 
-		sendBroadcast(new Intent("com.vmt.lamppu.SET_DEV"));
-		// to make sure device permissions are ok.
+        sendBroadcast(new Intent("com.vmt.lamppu.SET_DEV"));
+        // to make sure device permissions are ok.
 
-		final ToggleButton togglebutton = (ToggleButton) findViewById(R.id.ToggleButton01);
-		togglebutton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				// Perform action on clicks
-				if (togglebutton.isChecked()) {
-					sendBroadcast(new Intent("com.vmt.lamppu.LIGHT_ON"));
-					mLightOn = true;
-				} else {
-					sendBroadcast(new Intent("com.vmt.lamppu.LIGHT_OFF"));
-					mLightOn = false;
-				}
-			}
-		});
+        final ToggleButton togglebutton = (ToggleButton) findViewById(R.id.ToggleButton01);
+        togglebutton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on clicks
+                if (togglebutton.isChecked()) {
+                    sendBroadcast(new Intent("com.vmt.lamppu.LIGHT_ON"));
+                    mLightOn = true;
+                } else {
+                    sendBroadcast(new Intent("com.vmt.lamppu.LIGHT_OFF"));
+                    mLightOn = false;
+                }
+            }
+        });
 
-		final CheckBox checkbox = (CheckBox) findViewById(R.id.CheckBox01);
-		checkbox.setChecked(mHighMode);
-		checkbox.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				if (((CheckBox) v).isChecked()) {
-					sendBroadcast(new Intent("com.vmt.lamppu.HIGHMODE_ON"));
-					mHighMode = true;
-					editor.putBoolean("highMode", mHighMode);
-					editor.commit();
-					/* Set highmode trough settings */
+        final CheckBox checkbox = (CheckBox) findViewById(R.id.CheckBox01);
+        checkbox.setChecked(mHighMode);
+        checkbox.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    sendBroadcast(new Intent("com.vmt.lamppu.HIGHMODE_ON"));
+                    mHighMode = true;
+                    editor.putBoolean("highMode", mHighMode);
+                    editor.commit();
+                    /* Set highmode trough settings */
 
-				} else {
-					sendBroadcast(new Intent("com.vmt.lamppu.HIGHMODE_OFF"));
-					mHighMode = false;
-					editor.putBoolean("highMode", mHighMode);
-					editor.commit();
-				}
-			}
-		});
-	}
-	
-/* XXX Implement about menu
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		boolean result = super.onCreateOptionsMenu(menu);
-		menu.add(0, MENU_ABOUT, 0, R.string.menu_quit);
-		return result;
-	}
+                } else {
+                    sendBroadcast(new Intent("com.vmt.lamppu.HIGHMODE_OFF"));
+                    mHighMode = false;
+                    editor.putBoolean("highMode", mHighMode);
+                    editor.commit();
+                }
+            }
+        });
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case MENU_ABOUT:
-			// XXX Show menu
-			return true;
-		}
-		return false;
-	}
-*/
-	@Override
-	public void onStart() {
-		super.onStart();
-	}
+    /*
+     * XXX Implement about menu
+     * 
+     * @Override public boolean onCreateOptionsMenu(Menu menu) { boolean result
+     * = super.onCreateOptionsMenu(menu); menu.add(0, MENU_ABOUT, 0,
+     * R.string.menu_quit); return result; }
+     * 
+     * @Override public boolean onOptionsItemSelected(MenuItem item) { switch
+     * (item.getItemId()) { case MENU_ABOUT: // XXX Show menu return true; }
+     * return false; }
+     */
 
-	@Override
-	public void onRestart() {
-		super.onRestart();
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Log.d("Lamppu", "Activity onResume");
+        final CheckBox checkbox = (CheckBox) findViewById(R.id.CheckBox01);
+        checkbox.setChecked(mHighMode); // Should be ok, since only place to
+        // change is here.
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		// Log.d("Lamppu", "Activity onResume");
-		final CheckBox checkbox = (CheckBox) findViewById(R.id.CheckBox01);
-		checkbox.setChecked(mHighMode); // Should be ok, since only place to
-										// change is here.
+        final SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        mLightOn = settings.getBoolean("light", false);
+        final ToggleButton togglebutton = (ToggleButton) findViewById(R.id.ToggleButton01);
+        togglebutton.setChecked(mLightOn);
 
-		final SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		mLightOn = settings.getBoolean("light", false);
-		final ToggleButton togglebutton = (ToggleButton) findViewById(R.id.ToggleButton01);
-		togglebutton.setChecked(mLightOn);
-
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-	}
-
-	public void updateLighOn() {
-		mLightOn = true;
-	}
+    }
 
 }
